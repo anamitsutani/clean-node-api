@@ -14,7 +14,7 @@ export default {
   // cacheDirectory: "/tmp/jest_rt",
 
   // Automatically clear mock calls and instances between every test
-  // clearMocks: true,
+  clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
@@ -31,7 +31,7 @@ export default {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  // coverageProvider: 'v8',
+  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
