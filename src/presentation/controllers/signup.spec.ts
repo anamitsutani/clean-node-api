@@ -1,6 +1,7 @@
 import { SignUpController } from './signup'
 import { MissingParamError } from '../errors/missing-param-error'
 
+// factory helper method
 const makeSut = (): SignUpController => {
   return new SignUpController()
 }
