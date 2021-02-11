@@ -10,7 +10,7 @@ interface SutTypes {
 
 // factory helper method
 const makeSut = (): SutTypes => {
-  //  Stub é essa classe de "mentirinha" ou "mockada" com um valor estatico usada pra testar
+//  Stub é essa classe de "mentirinha" ou "mockada" com um valor estatico usada pra testar
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): boolean {
       return true
@@ -102,5 +102,22 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
+
+  test('Should call EMailValidator with correct email', () => {
+    const { sut, emailValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword'
+      }
+    }
+
+    sut.handle(httpRequest)
+    expect(isValidSpy).toHaveBeenCalledWith('anyemail@mail.com')
   })
 })
