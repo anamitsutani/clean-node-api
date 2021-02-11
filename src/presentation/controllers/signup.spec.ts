@@ -8,17 +8,30 @@ interface SutTypes {
 }
 
 // factory helper method
-const makeSut = (): SutTypes => {
-//  Stub é essa classe de "mentirinha" ou "mockada" com um valor estatico usada pra testar
+const makeEmailValidator = (): EmailValidator => {
+  //  Stub é essa classe de "mentirinha" ou "mockada" com um valor estatico usada pra testar
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): boolean {
       return true
     }
   }
 
-  const emailValidatorStub = new EmailValidatorStub()
-  const sut = new SignUpController(emailValidatorStub)
+  return new EmailValidatorStub()
+}
 
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      throw new Error()
+    }
+  }
+
+  return new EmailValidatorStub()
+}
+
+const makeSut = (): SutTypes => {
+  const emailValidatorStub = makeEmailValidator()
+  const sut = new SignUpController(emailValidatorStub)
   return {
     sut,
     emailValidatorStub
@@ -121,14 +134,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 500 if EmailValidator throws', () => {
-    class EmailValidatorStub implements EmailValidator {
-      isValid (email: string): boolean {
-        throw new Error()
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
-    const sut = new SignUpController(emailValidatorStub)
+    const emailValidatorStubWithError = makeEmailValidatorWithError()
+    const sut = new SignUpController(emailValidatorStubWithError)
 
     const httpRequest = {
       body: {
