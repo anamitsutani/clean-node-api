@@ -30,10 +30,10 @@ const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     add (account: AddAccountModel): AccountModel {
       const fakeAccount = {
-        id: 'validid',
+        id: 'validId',
         name: 'validname',
         email: 'validemail@mail.com',
-        password: 'valispassword'
+        password: 'validpassword'
       }
       return fakeAccount
     }
@@ -226,6 +226,28 @@ describe('SignUp Controller', () => {
       name: 'anyname',
       email: 'anyemail@mail.com',
       password: 'anypassword'
+    })
+  })
+
+  test('Should return 200 if valid data is provided', () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'validname',
+        email: 'validemail@mail.com',
+        password: 'validpassword',
+        passwordConfirmation: 'validpassword'
+      }
+    }
+
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'validId',
+      name: 'validname',
+      email: 'validemail@mail.com',
+      password: 'validpassword'
     })
   })
 })
