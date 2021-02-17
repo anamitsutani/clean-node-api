@@ -10,24 +10,25 @@ interface SutTypes {
 // factory helper method
 const makeEmailValidator = (): EmailValidator => {
   //  Stub é essa classe de "mentirinha" ou "mockada" com um valor estatico usada pra testar
+  // sempre pra mockar eh melhor criar uma interface (no caso o EmailValidator) que uma classe, pois a classe pode ter metodos que tornariam o mockagem mais complexa
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): boolean {
       return true
     }
   }
-
   return new EmailValidatorStub()
 }
 
-const makeEmailValidatorWithError = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      throw new Error()
-    }
-  }
+// Pode deletar essa factory pq o teste que precisava do EmailValidato com erro esta mockando o erro com jest no proprio erro
 
-  return new EmailValidatorStub()
-}
+// const makeEmailValidatorWithError = (): EmailValidator => {
+//   class EmailValidatorStub implements EmailValidator {
+//     isValid (email: string): boolean {
+//       throw new Error()
+//     }
+//   }
+//   return new EmailValidatorStub()
+// }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
@@ -116,7 +117,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
   })
 
-  test('Should call EMailValidator with correct email', () => {
+  test('Should call EmailValidator with correct email', () => {
     const { sut, emailValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
 
@@ -134,8 +135,10 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 500 if EmailValidator throws', () => {
-    const emailValidatorStubWithError = makeEmailValidatorWithError()
-    const sut = new SignUpController(emailValidatorStubWithError)
+    const { sut , emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error()
+    })
 
     const httpRequest = {
       body: {
