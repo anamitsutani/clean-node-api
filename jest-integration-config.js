@@ -1,3 +1,3 @@
 const config = require('./jest.config')
-config.testMtach = ['**/*.test.ts']
+config.testMatch = ['**/*.test.ts']
 module.exports = config
