@@ -33,7 +33,10 @@ describe('DbAddAccount: Usecase', () => {
       email: 'validpassword',
       password: 'validpassword'
     }
+
+    //  will use data passed in the test to call the add method of DbAddAccount
     await sut.add(accountData)
+    // will test to see if encrypt method was properly called
     expect(encryptSpy).toHaveBeenCalledWith('validpassword')
   })
 
