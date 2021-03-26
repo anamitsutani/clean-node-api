@@ -5,6 +5,6 @@ MongoHelper.connect(env.mongoUrl)
   .then(async () => {
     const app = (await import('./config/app')).default
 
-    app.listen(5050, () => console.log(`Sever running at hhtp://localhost:5050${env.port}`))
+    app.listen(5050, () => console.log(`Sever running at http://localhost:${env.port}`))
   })
   .catch(console.error)
