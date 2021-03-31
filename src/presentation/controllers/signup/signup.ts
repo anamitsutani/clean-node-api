@@ -21,12 +21,7 @@ export class SignUpController implements Controller {
       }
 
       //  get attributes from httpRequest
-      const { name, email, password, passwordConfirmation } = httpRequest.body
-
-      //  check if password and passwordConfirmation are the same
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamError('passwordConfirmation'))
-      }
+      const { name, email, password } = httpRequest.body
 
       //  email validation
       const isValid = this.emailValidator.isValid(email)
