@@ -17,7 +17,6 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
 
-      //  get attributes from httpRequest
       const { name, email, password } = httpRequest.body
       const account = await this.addAccount.add({
         name,
