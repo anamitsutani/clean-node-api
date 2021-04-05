@@ -1,4 +1,3 @@
-import { rejects } from 'assert'
 import jwt from 'jsonwebtoken'
 import { JwtAdapter } from './jwt-adapter'
 
@@ -8,22 +7,26 @@ jest.mock('jsonwebtoken', () => ({
   }
 }))
 
+const makeSut = (): JwtAdapter => {
+  return new JwtAdapter('secret')
+}
+
 describe('JWT Adapter', () => {
   test('Should call sign with correct values', async () => {
-    const sut = new JwtAdapter('secret')
+    const sut = makeSut()
     const signSpy = jest.spyOn(jwt, 'sign')
     await sut.encrypt('anyid')
     expect(signSpy).toHaveBeenCalledWith({ id: 'anyid' }, 'secret')
   })
 
   test('Should return a token on sign suceess', async () => {
-    const sut = new JwtAdapter('secret')
+    const sut = makeSut()
     const accessToken = await sut.encrypt('anyid')
     expect(accessToken).toBe('anytoken')
   })
 
   test('Should throw if sign throws', async () => {
-    const sut = new JwtAdapter('secret')
+    const sut = makeSut()
     jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
       throw new Error()
     })
