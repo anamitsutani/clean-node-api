@@ -5,7 +5,7 @@ export interface AddSurveyModel {
 
 export interface SurveyAnswer {
     image: 'anyimage',
-    amswer: 'anyanswer'
+    answer: 'anyanswer'
 }
 
 export interface  AddSurvey {
