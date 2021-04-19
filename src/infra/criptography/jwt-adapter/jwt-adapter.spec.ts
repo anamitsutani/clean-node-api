@@ -48,10 +48,10 @@ describe('JWT Adapter', () => {
       expect(verifySpy).toHaveBeenCalledWith('anytoken', 'secret')
     })
   
-    test('Should return a token on sign suceess', async () => {
+    test('Should return a token on verify suceess', async () => {
       const sut = makeSut()
-      const accessToken = await sut.encrypt('anyid')
-      expect(accessToken).toBe('anytoken')
+      const value = await sut.decrypt('anytoken')
+      expect(value).toBe('anyvalue')
     })
   
     test('Should throw if sign throws', async () => {
@@ -63,5 +63,4 @@ describe('JWT Adapter', () => {
       await expect(promise).rejects.toThrow()
     })
   })
-  
 })
